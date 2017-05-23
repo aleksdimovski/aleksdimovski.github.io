@@ -1,0 +1,193 @@
+minus(down,upper,v) = 
+	if v==Z then Z
+	else if v==Plus then Minus
+	else if v==Minus then Plus
+	else if -v>upper then Plus
+	else if -v<down then Minus
+	else -v
+
+abs(v) =
+ if v>=0 then v
+	else -v		
+
+		
+mod(down,upper,down1,upper1,down2,upper2,v1,v2) = 
+	if v1==Z or v2==Z then { Z }
+	else if v1==0 then { 0 } 
+	else if v1==Plus or v2==Plus then union({ down..upper },{ Minus,Plus })
+	else if v1==Minus or v2==Minus then union({ down..upper },{ Minus,Plus })
+	else if v1%v2>upper then { Plus }
+	else if v1%v2<down then { Minus }
+	else { v1%v2 }
+
+	
+div(down,upper,down1,upper1,down2,upper2,v1,v2) = 
+	if v1==Z or v2==Z then { Z }
+	else if v1==0 then { 0 } 
+	else if v1==Plus or v2==Plus then union({ down..upper },{ Minus,Plus })
+	else if v1==Minus or v2==Minus then union({ down..upper },{ Minus,Plus })
+	else if v1/v2>upper then { Plus }
+	else if v1/v2<down then { Minus }
+	else { v1/v2 }
+
+	
+mul(down,upper,down1,upper1,down2,upper2,v1,v2) =
+	if (v1==0 or v2==0) then { 0 } 
+	else if v1==Z or v2==Z then { Z }
+	
+	else if v1==Plus and v2>=upper2 and upper1*upper2>down1*down2 then { Plus }
+	else if v1==Plus and v2==Minus and upper1*down2<=down1*upper2 then { Minus }
+	else if v1==Plus then union({ down..upper },{ Minus,Plus })
+	
+	else if v2==Plus and v1>=upper1 then { Plus }
+	else if v2==Plus and v1==Minus and upper2*down1<=down2*upper1 then { Minus }
+	else if v2==Plus then union({ down..upper },{ Minus,Plus })
+	
+	else if v1==Minus and v2<=down2 and down1*down2>=upper1*upper2 then { Plus }
+	else if v1==Minus then union({ down..upper },{ Minus,Plus })
+	
+	else if v2==Minus and v1<=down1 and down1*down2>=upper1*upper2 then { Plus }
+	else if v2==Minus then union({ down..upper },{ Minus,Plus })
+	
+	else if v1*v2>upper then { Plus }
+	else if v1*v2<down then { Minus }
+	else { v1*v2 }
+
+
+sub(down,upper,down1,upper1,down2,upper2,v1,v2) =
+	if v1==Z or v2==Z then { Z }
+	else if v1==Plus and v2<=down2 then { Plus }
+	else if v1==Plus and v2==Plus then union({ down..upper },{ Minus,Plus })
+	else if v1==Plus and upper1+1-v2>=down then union({ upper1+1-v2..upper },{ Plus })
+	else if v1==Plus then union({ down..upper},{ Minus,Plus })
+	
+	else if v2==Plus and v1<=down1 then { Minus }
+	else if v2==Plus and v1-(upper2+1)<=upper then union({ down..v1-(upper2+1) },{ Minus })
+	else if v1==Plus then union({ down..upper},{ Minus,Plus })
+	
+	else if v1==Minus and v2>=upper2 then { Minus }
+	else if v1==Minus and v2==Minus then union({ down..upper },{ Minus,Plus })
+	else if v1==Minus and down1-1-v2<=upper then union({ down..down1-1-v2 },{ Minus })
+	else if v1==Minus then union({ down..upper},{ Minus,Plus })
+		
+	else if v2==Minus and v1>=upper1 then { Plus }
+	else if v2==Minus and v1-(down2-1)>=down then union({ v1-(down2-1)..upper },{ Plus })
+	else if v2==Minus then union({ down..upper },{ Minus,Plus })
+	
+	else if v1-v2>upper then { Plus }
+	else if v1-v2<down then { Minus }
+	else { v1-v2 }
+
+	
+add(down,upper,down1,upper1,down2,upper2,v1,v2) =
+	if v1==Z or v2==Z then { Z }
+	else if v1==Plus and v2>=upper2 then { Plus }
+	else if v1==Plus and v2==Minus then union({ down..upper },{ Minus,Plus })
+	else if v1==Plus and upper1+1+v2>=down then union({ upper1+1+v2..upper },{ Plus })
+	else if v1==Plus then union({ down..upper },{ Minus,Plus })
+	
+	else if v2==Plus and v1>=upper1 then { Plus }
+	else if v2==Plus and v1==Minus then union({ down..upper },{ Minus,Plus })
+	else if v2==Plus and upper2+1+v1>=down then union({ upper2+1+v1..upper },{ Plus })
+	else if v2==Plus then union({ down..upper },{ Minus,Plus })
+	
+	else if v1==Minus and v2<=down2 then { Minus }
+	else if v1==Minus and down1-1+v2<=upper then union({ down..down1-1+v2 },{ Minus })
+	else if v1==Minus then union({ down..upper },{ Minus,Plus })
+	
+	else if v2==Minus and v1<=down1 then { Minus }
+	else if v2==Minus and down2-1+v1<=upper then union({ down..down2-1+v1 },{ Minus })
+	else if v2==Minus then union({ down..upper },{ Minus,Plus })
+	
+	else if v1+v2>upper then { Plus }
+	else if v1+v2<down then { Minus }
+	else { v1+v2 }
+
+
+greatereq(down1,upper1,down2,upper2,v1,v2) =
+	if v1==Z or v2==Z then { false,true }
+	else if v1==Plus and v2<=(upper1+1) and v2!=Plus then { true }
+	else if v2==Plus and v1<=upper2 then { false }
+	else if v1==Minus and v2>=down1 then { false }
+	else if v2==Minus and v1>=(down2-1) and v1!=Minus then { true }	
+	else if v1==Minus or v2==Minus then { false,true }
+	else if v1==Plus or v2==Plus then { false,true }
+	else { v1>=v2 }	
+
+	
+lesseq(down1,upper1,down2,upper2,v1,v2) = 
+	if v1==Z or v2==Z then { false,true }
+	else if v1==Plus and v2<=upper1 then { false }
+	else if v2==Plus and v1<=(upper2+1) and v1!=Plus then { true }
+	else if v1==Minus and v2>=(down1-1) and v2!=Minus then { true }
+	else if v2==Minus and v1>=down2 then { false }	
+	else if v1==Minus or v2==Minus then { false,true }
+	else if v1==Plus or v2==Plus then { false,true }
+	else { v1<=v2 }	
+
+	
+greater(down1,upper1,down2,upper2,v1,v2) = 
+	if v1==Z or v2==Z then { false,true }
+	else if v1==Plus and v2<=upper1 then { true }
+	else if v2==Plus and v1<=(upper2+1) and v1!=Plus then { false }
+	else if v1==Minus and v2>=(down1-1) and v2!=Minus then { false }
+	else if v2==Minus and v1>=down2 then { true }	
+	else if v1==Minus or v2==Minus then { false,true }
+	else if v1==Plus or v2==Plus then { false,true }
+	else { v1>v2 }
+	
+
+less(down1,upper1,down2,upper2,v1,v2) = 
+	if v1==Z or v2==Z then { false,true }
+	else if v1==Plus and v2<=(upper1+1) and v2!=Plus then { false }
+	else if v2==Plus and v1<=upper2 then { true }
+	else if v1==Minus and v2>=down1 then { true }
+	else if v2==Minus and v1>=(down2-1) and v1!=Minus then { false }	
+	else if v1==Minus or v2==Minus then { false,true }
+	else if v1==Plus or v2==Plus then { false,true }
+	else { v1<v2 }	
+
+	
+noteqn(down1,upper1,down2,upper2,v1,v2) = 
+	if v1==Z or v2==Z then { false,true }
+	else if v1==Plus and v2<=upper1 then { true }
+	else if v2==Plus and v1<=upper2 then { true }
+	else if v1==Minus and v2>=down1 then { true }
+	else if v2==Minus and v1>=down2 then { true }	
+	else if v1==Minus or v2==Minus then { false,true }
+	else if v1==Plus or v2==Plus then { false,true }	
+	else { v1!=v2 }	
+	
+		
+eqn(down1,upper1,down2,upper2,v1,v2) = 
+	if v1==Z or v2==Z then { false,true }
+	else if v1==Plus and v2<=upper1 then { false }
+	else if v2==Plus and v1<=upper2 then { false }
+	else if v1==Minus and v2>=down1 then { false }
+	else if v2==Minus and v1>=down2 then { false }	
+	else if v1==Minus or v2==Minus then { false,true }
+	else if v1==Plus or v2==Plus then { false,true }	
+	else { v1==v2 }	
+
+		
+cast(fromdown,fromupper,todown,toupper,v) =
+	if todown==Z then { Z }
+	else if v==Z then union({ todown..toupper },{ Minus,Plus })
+	else if v==Plus and fromupper>=toupper then { Plus }
+	else if v==Minus and fromdown<=todown then { Minus }
+	else if v==Plus then union({ fromupper+1..toupper },{ Plus })
+	else if v==Minus then union({ fromdown-1..todown },{ Minus } )
+	else if v>toupper then { Plus }
+	else if v<todown then { Minus }
+	else { v }
+
+Rank(down,upper,v) = 
+	if v==Z then 0
+	else if v==Minus and down>=0 then 6*down+1
+	else if v==Minus and down<0 then (-6)*(down+1)+3
+	else if v==Plus and upper>=0 then 6*upper+6
+	else if v==Plus and upper<0 then (-6)*(upper+1)+2
+	else if v>=0 then 6*v+5
+	else (-6)*(v+1)+4
+	
+	
