@@ -19,7 +19,7 @@ fNUSMV APPROACH
 >> time NuSMV -r -df -dynamic elevator4.smv (to check P1, P2, P3, and P4 properties from Elevator example)
 
 
-VERIFY APPROACH
+VERIFY and GEN-VERIFY APPROACHES
 
 1. Synthetic Example 
 
@@ -31,9 +31,9 @@ VERIFY APPROACH
 Note that we pass 2 arguments to the main program:
 - the first is the property we verify: use 0 for \phi_0 and 1 for \phi_1, and 
 - the second is the number of available feautres (e.g. n = 2, 7, 10, 14) 
-The 3rd argument is optional: "gen" to run "Gen-Verify" procedure  
+The 3rd argument is optional: use "gen" to run "Gen-Verify" procedure  
 
-- Alternative way to test Verify approach is to download and unzip verify_sources.zip, then run it:
+- Alternative way to test Verify and Gen-Verify approaches is to download and unzip verify_sources.zip, then run it:
 >> javac *.java
 >> java App 0 7
 >> java App 1 7 
